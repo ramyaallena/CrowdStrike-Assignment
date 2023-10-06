@@ -1,0 +1,16 @@
+import com.atlassian.jira.bc.issue.search.SearchService
+import com.atlassian.jira.component.ComponentAccessor
+import com.atlassian.jira.web.bean.PagerFilter
+
+def appUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser()
+def searchService = ComponentAccessor.getComponent(SearchService.class)
+def field = 'SalesRepresentative'
+def jqlSearch = "\"${field}\" is not Empty"
+
+SearchService.ParseResult parseResult = searchService.parseQuery(appUser,jqlSearch)
+if (parseResult.isValid())
+{
+    def searchResult = searchService.search(appUser, parseResult.getQuery(), PagerFilter.getUnlimitedFilter())
+    def issues = searchResult.results
+    return issues.size()
+}
