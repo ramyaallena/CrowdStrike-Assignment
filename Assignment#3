@@ -1,0 +1,25 @@
+import com.atlassian.jira.issue.MutableIssue
+import com.atlassian.jira.bc.issue.search.SearchService
+import com.atlassian.jira.component.ComponentAccessor
+import com.atlassian.jira.web.bean.PagerFilter
+
+def appUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser()
+def searchService = ComponentAccessor.getComponent(SearchService.class)
+def field = 'SalesRepresentative'
+def target = '<target field>'
+def jqlSearch = "\"${field}\" is not Empty"
+
+def field1 = ComponentAccessor.customFieldManager.getCustomFieldObjectsByName(field)[0]
+def field2 = ComponentAccessor.customFieldManager.getCustomFieldObjectsByName(target)[0]
+
+SearchService.ParseResult parseResult = searchService.parseQuery(appUser,jqlSearch)
+if (parseResult.isValid())
+{
+    def searchResult = searchService.search(appUser, parseResult.getQuery(), PagerFilter.getUnlimitedFilter())
+    def issues = searchResult.results
+    issues.each { 
+        def issue = it as MutableIssue
+        issue.setCustomFieldValue(field2,issue.getCustomFieldValue(field1))
+     }
+    
+ }
