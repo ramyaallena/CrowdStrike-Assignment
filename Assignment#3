@@ -5,8 +5,8 @@ import com.atlassian.jira.web.bean.PagerFilter
 
 def appUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser()
 def searchService = ComponentAccessor.getComponent(SearchService.class)
-def field = 'SalesRepresentative'
-def target = '<target field>'
+def field = 'Annual Sales'
+def target = 'Sales'
 def jqlSearch = "\"${field}\" is not Empty"
 
 def field1 = ComponentAccessor.customFieldManager.getCustomFieldObjectsByName(field)[0]
