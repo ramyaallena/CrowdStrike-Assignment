@@ -18,7 +18,7 @@ if (parseResult.isValid())
     def searchResult = searchService.search(appUser, parseResult.getQuery(), PagerFilter.getUnlimitedFilter())
     def issues = searchResult.results
     issues.each { 
-        def issue = it as MutableIssue
+        def issue = ComponentAccessor.issueManager.getIssueByCurrentKey(it.key)
         issue.setCustomFieldValue(field2,issue.getCustomFieldValue(field1))
      }
     
